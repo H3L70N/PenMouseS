@@ -22,11 +22,14 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import pl.jojczak.penmouses.core.common.utils.PrefKey
+import pl.jojczak.penmouses.core.common.utils.PrefKeys
 import pl.jojczak.penmouses.core.ui.theme.PenMouseSDevicePreview
 import pl.jojczak.penmouses.core.ui.theme.pad_m
 import pl.jojczak.penmouses.core.ui.theme.radius_m
 import pl.jojczak.penmouses.screen.settings.R
 import pl.jojczak.penmouses.screen.settings.components.horizontalDivider
+import pl.jojczak.penmouses.screen.settings.components.settingsSlider
 import pl.jojczak.penmouses.screen.settings.mvi.SettingsViewAction
 
 @Composable
@@ -45,6 +48,8 @@ internal fun SettingsScrollTab(
     SettingsScrollTabContent(
         viewState = viewState,
         contentPadding = contentPadding,
+        onPrefChanging = { key, value -> viewModel.onViewAction(SettingsViewAction.UpdatePreference(key, value)) },
+        onPrefChanged = { key, value -> viewModel.onViewAction(SettingsViewAction.SavePreference(key, value)) },
         onExperimentalModeClicked = { viewModel.onViewAction(SettingsScrollViewAction.ExperimentalModeUpdate(it)) }
     )
     // @formatter:on
@@ -54,11 +59,33 @@ internal fun SettingsScrollTab(
 private fun SettingsScrollTabContent(
     viewState: SettingsScrollState,
     contentPadding: PaddingValues,
+    onPrefChanging: (PrefKey<Float>, Float) -> Unit = { _, _ -> },
+    onPrefChanged: (PrefKey<Float>, Float) -> Unit = { _, _ -> },
     onExperimentalModeClicked: (Boolean) -> Unit = {}
 ) = LazyColumn(
     contentPadding = contentPadding,
     modifier = Modifier.fillMaxSize()
 ) {
+    settingsSlider(
+        text = R.string.settings_scroll_distance,
+        value = viewState.scrollDistance,
+        prefKey = PrefKeys.SCROLL_DISTANCE,
+        onPrefChanging = onPrefChanging,
+        onPrefChanged = onPrefChanged
+    )
+
+    horizontalDivider()
+
+    settingsSlider(
+        text = R.string.settings_scroll_duration,
+        value = viewState.scrollDuration,
+        prefKey = PrefKeys.SCROLL_DURATION,
+        onPrefChanging = onPrefChanging,
+        onPrefChanged = onPrefChanged
+    )
+
+    horizontalDivider()
+
     experimentalModeCheckBox(
         experimentalModeEnabled = viewState.experimentalModeEnabled,
         onExperimentalModeClicked = onExperimentalModeClicked
