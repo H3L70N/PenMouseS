@@ -39,6 +39,7 @@ class ScrollMode(
     private var isExperimentalModeEnabled: Boolean = false
     private var prefScrollDistance = PrefKeys.SCROLL_DISTANCE.default
     private var prefScrollDuration = PrefKeys.SCROLL_DURATION.default
+    private var prefScrollDownOnly = PrefKeys.SCROLL_DOWN_ONLY.default
     private var deltaY = 0f
 
     override fun start() {
@@ -89,7 +90,7 @@ class ScrollMode(
     }
 
     private fun performScrollGesture() {
-        val isScrollingUp = deltaY > 0
+        val isScrollingUp = prefScrollDownOnly || deltaY > 0
 
         val (screenWidth, screenHeight) = getDisplaySize(displayManager.getDisplay(Display.DEFAULT_DISPLAY))
         val centerX = screenWidth / 2f
@@ -118,5 +119,6 @@ class ScrollMode(
         isExperimentalModeEnabled = preferences.get(PrefKeys.SCROLL_EXPERIMENTAL_MODE)
         prefScrollDistance = preferences.get(PrefKeys.SCROLL_DISTANCE)
         prefScrollDuration = preferences.get(PrefKeys.SCROLL_DURATION)
+        prefScrollDownOnly = preferences.get(PrefKeys.SCROLL_DOWN_ONLY)
     }
 }

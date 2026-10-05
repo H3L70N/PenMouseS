@@ -80,6 +80,7 @@ class PreferencesManager(
             put(PrefKeys.SCROLL_EXPERIMENTAL_MODE, PrefKeys.SCROLL_EXPERIMENTAL_MODE.default)
             put(PrefKeys.SCROLL_DISTANCE, PrefKeys.SCROLL_DISTANCE.default)
             put(PrefKeys.SCROLL_DURATION, PrefKeys.SCROLL_DURATION.default)
+            put(PrefKeys.SCROLL_DOWN_ONLY, PrefKeys.SCROLL_DOWN_ONLY.default)
             this.apply()
         }
         Log.d(TAG, "Preferences reset")
@@ -103,6 +104,7 @@ object PrefKeys {
     val SCROLL_EXPERIMENTAL_MODE = PrefKey("scroll_experimental_mode", false)
     val SCROLL_DISTANCE = PrefKey("scroll_distance", 60f, 5f, 10f..90f)
     val SCROLL_DURATION = PrefKey("scroll_duration", 150f, 50f, 100f..1000f)
+    val SCROLL_DOWN_ONLY = PrefKey("scroll_down_only", false)
     val FIRST_RUN = PrefKey("first_run", true)
     val LAUNCH_COUNT = PrefKey("launch_count", 0)
     val ANALYTICS_CONSENT_SHOWED = PrefKey("analytics_consent_showed", false)

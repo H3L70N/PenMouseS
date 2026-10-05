@@ -19,6 +19,7 @@ internal class SettingsScrollViewModel @Inject constructor(
             experimentalModeEnabled = preferencesManager.get(PrefKeys.SCROLL_EXPERIMENTAL_MODE),
             scrollDistance = preferencesManager.get(PrefKeys.SCROLL_DISTANCE),
             scrollDuration = preferencesManager.get(PrefKeys.SCROLL_DURATION),
+            scrollDownOnly = preferencesManager.get(PrefKeys.SCROLL_DOWN_ONLY),
         )
     }
 
@@ -27,6 +28,7 @@ internal class SettingsScrollViewModel @Inject constructor(
         is SettingsViewAction.SavePreference<*> -> savePreference(action)
         is SettingsViewAction.UpdatePreference<*> -> updatePreference(action)
         is SettingsScrollViewAction.ExperimentalModeUpdate -> experimentalModeUpdate(action.enabled)
+        is SettingsScrollViewAction.ScrollDownOnlyUpdate -> scrollDownOnlyUpdate(action.enabled)
         else -> Unit
     }
 
@@ -45,6 +47,12 @@ internal class SettingsScrollViewModel @Inject constructor(
     private fun experimentalModeUpdate(enabled: Boolean) {
         preferencesManager.put(PrefKeys.SCROLL_EXPERIMENTAL_MODE, enabled)
         updateState { it.copy(experimentalModeEnabled = enabled) }
+        tryToPingService()
+    }
+
+    private fun scrollDownOnlyUpdate(enabled: Boolean) {
+        preferencesManager.put(PrefKeys.SCROLL_DOWN_ONLY, enabled)
+        updateState { it.copy(scrollDownOnly = enabled) }
         tryToPingService()
     }
 }

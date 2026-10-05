@@ -8,8 +8,10 @@ internal data class SettingsScrollState(
     val experimentalModeEnabled: Boolean = false,
     val scrollDistance: Float = PrefKeys.SCROLL_DISTANCE.default,
     val scrollDuration: Float = PrefKeys.SCROLL_DURATION.default,
+    val scrollDownOnly: Boolean = false,
 ): SettingsTabState()
 
 internal sealed class SettingsScrollViewAction: SettingsViewAction() {
     data class ExperimentalModeUpdate(val enabled: Boolean): SettingsScrollViewAction()
+    data class ScrollDownOnlyUpdate(val enabled: Boolean): SettingsScrollViewAction()
 }
